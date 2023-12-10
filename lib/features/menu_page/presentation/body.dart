@@ -1,5 +1,7 @@
+import 'package:burger_food/core/presentation/routes/app_navigation.dart';
 import 'package:burger_food/core/styles/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
@@ -13,6 +15,33 @@ class MenuBody extends StatelessWidget {
     return SafeArea(
         child: CustomScrollView(
       slivers: [
+        SliverAppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  AppNavigation.login(context);
+                },
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ))
+          ],
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                height: 75,
+                width: 20,
+                'assets/images/1.svg',
+              ),
+              Text(
+                'Бургер и точка',
+                style: TextStyle(fontSize: 16),
+              )
+            ],
+          ),
+          backgroundColor: Colors.green,
+        ),
         SliverToBoxAdapter(
             child: Padding(
           padding: const EdgeInsets.only(top: 10),

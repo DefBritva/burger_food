@@ -13,7 +13,6 @@ class StartView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width;
-    final height = size.height;
     final ScrollController myScrollWorks = ScrollController();
     return Scaffold(
       backgroundColor: Colors.grey.shade900,

@@ -1,13 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:burger_food/core/bloc/burger_bloc.dart';
 import 'package:flutter/material.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: BackButton(
           onPressed: () {
@@ -49,6 +67,7 @@ class AuthPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             FormWidget(
+              controller: emailController,
               hint: 'E-mail',
             ),
             SizedBox(height: 15),
@@ -57,6 +76,7 @@ class AuthPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             PasswordWidget(
+              controller: passwordController,
               hint: 'Пароль',
             ),
             Expanded(child: SizedBox()),
@@ -64,10 +84,17 @@ class AuthPage extends StatelessWidget {
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<BurgerBloc>().add(
+                            RegisterUser(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                    },
                     child: Text(
                       'Создать аккаунт',
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ))),
           ],
         ),
@@ -78,8 +105,12 @@ class AuthPage extends StatelessWidget {
 
 class FormWidget extends StatelessWidget {
   const FormWidget(
-      {super.key, required this.hint, this.obsure, this.decoration});
-
+      {super.key,
+      required this.hint,
+      this.obsure,
+      this.decoration,
+      this.controller});
+  final TextEditingController? controller;
   final String hint;
   final bool? obsure;
   final InputDecoration? decoration;
@@ -87,6 +118,7 @@ class FormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obsure ?? false,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white54,
@@ -108,9 +140,10 @@ class FormWidget extends StatelessWidget {
 }
 
 class PasswordWidget extends StatefulWidget {
-  const PasswordWidget({super.key, required this.hint});
+  const PasswordWidget({super.key, required this.hint, this.controller});
 
   final String hint;
+  final TextEditingController? controller;
 
   @override
   State<PasswordWidget> createState() => _PasswordWidgetState();
@@ -122,6 +155,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
       obscureText: obsure,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white54,
